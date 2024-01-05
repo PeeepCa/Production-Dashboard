@@ -134,6 +134,8 @@ class support:
                 mode = x.split('=')[1]
             elif 'instrPATH' in x:
                 serverInstr = x.split('=')[1]
+            elif 'instrGEN' in x:
+                serverInstrGen = x.split('=')[1]
             elif 'showInstr' in x:
                 showIntr = x.split('=')[1]
                 if showIntr == 'False':
@@ -157,7 +159,7 @@ class support:
             elif 'log_format' in x:
                 log_format = x.split('=')[1]
 
-        return stationNumber, dbtype, PATH, thread_number, restAPI, bool(remove_file), bool(dashboard), sesoData, sesoUpload, bool(useSESO), bool(parselog), bool(useReader), COM, BAUD, int(greenFPY), int(orangeFPY), mode, serverInstr, bool(showIntr), graphMode, bool(useLogin), company_logo, bool(showInfo), sesoData1, bool(useTraining), log_format
+        return stationNumber, dbtype, PATH, thread_number, restAPI, bool(remove_file), bool(dashboard), sesoData, sesoUpload, bool(useSESO), bool(parselog), bool(useReader), COM, BAUD, int(greenFPY), int(orangeFPY), mode, serverInstr, bool(showIntr), graphMode, bool(useLogin), company_logo, bool(showInfo), sesoData1, bool(useTraining), log_format, serverInstrGen
 
     def fpy_color(fpy, mode):
         if mode == 'light':
@@ -1262,7 +1264,7 @@ class GUI:
 
         def show_general_instr():
             ##Placeholder
-            webbrowser.open_new('https://DUMMY')
+            webbrowser.open_new(serverInstrGen)
 
         ##Left side
         ########################################################
@@ -1585,6 +1587,7 @@ def main():
     global showInfo
     global run
     global useTraining
+    global serverInstrGen
 
     run = True
     ########################################################
@@ -1595,11 +1598,11 @@ def main():
         msg_show = 1
 
         try:
-            stationNumber, dbtype, PATH, thread_number, restAPI, remove_file, dashboard, sesoData, sesoUpload, useSESO, parselog, useReader, COM, BAUD, greenFPY, orangeFPY, mode, serverInstr, showInstr, graphMode, useLogin, company_logo, showInfo, sesoData1, useTraining, log_format = support.read_config()
+            stationNumber, dbtype, PATH, thread_number, restAPI, remove_file, dashboard, sesoData, sesoUpload, useSESO, parselog, useReader, COM, BAUD, greenFPY, orangeFPY, mode, serverInstr, showInstr, graphMode, useLogin, company_logo, showInfo, sesoData1, useTraining, log_format, serverInstrGen = support.read_config()
         except FileNotFoundError:
             ctypes.windll.user32.MessageBoxW(0, 'Error 0x001 Config not found', 'Error', 0x1000)
             GUI.config_window()
-            stationNumber, dbtype, PATH, thread_number, restAPI, remove_file, dashboard, sesoData, sesoUpload, useSESO, parselog, useReader, COM, BAUD, greenFPY, orangeFPY, mode, serverInstr, showInstr, graphMode, useLogin, company_logo, showInfo, sesoData1, useTraining, log_format = support.read_config()
+            stationNumber, dbtype, PATH, thread_number, restAPI, remove_file, dashboard, sesoData, sesoUpload, useSESO, parselog, useReader, COM, BAUD, greenFPY, orangeFPY, mode, serverInstr, showInstr, graphMode, useLogin, company_logo, showInfo, sesoData1, useTraining, log_format, serverInstrGen = support.read_config()
             run = True
         except:
             ctypes.windll.user32.MessageBoxW(0, 'Error 0x002 Config error', 'Error', 0x1000)

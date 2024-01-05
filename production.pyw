@@ -60,6 +60,7 @@ from PIL import ImageTk, Image
 ##     - New log file variable for selection of the system
 ##v14  - Rexxam fixes
 ##v14b - Fixed NOK components mark
+##v14c - Added general instruction to config
 ########################################################
 tLock = threading.Lock()
 tLock = threading.BoundedSemaphore(value=1)
@@ -1052,7 +1053,7 @@ class GUI:
                          '##		0x201 Instruction not found			##\n'
                          '##		0x202 Company logo not found			##\n'
                          '##		0x203 Reader not found				##\n'
-                         '##		0x204 App is alreadz running			##\n'
+                         '##		0x204 App is already running			##\n'
                          '##		0x205 SSL Error					##\n'
                          '############################# Main data ##########################\n'
                          'stationNumber=' + input_var + '\n'

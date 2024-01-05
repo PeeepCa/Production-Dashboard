@@ -1053,17 +1053,18 @@ class GUI:
                          '##		0x202 Company logo not found			##\n'
                          '##		0x203 Reader not found				##\n'
                          '##		0x204 App is alreadz running			##\n'
+                         '##		0x205 SSL Error					##\n'
                          '############################# Main data ##########################\n'
                          'stationNumber=' + input_var + '\n'
                          'dbtype=ITAC\n'
-                         'restAPI=http://acz-itac/mes/imsapi/rest/actions/\n'
-                         'instrPATH=//fs/gs/IndustrialEngineering/Share/01_Production Instruction/\n'
+                         'restAPI=http://DUMMY\n'
+                         'instrPATH=//DUMMY\n'
                          '\n'
                          '########################## APAG specific #########################\n'
                          'SESO=True\n'
-                         'sesoData=https://seso.apag-elektronik.com/api/prod/\n'
-                         'sesoOperator=https://seso.apag-elektronik.com/api/\n'
-                         'sesoUpload=http://192.168.12.46/apag/www/production/post/\n'
+                         'sesoData=https://DUMMY\n'
+                         'sesoOperator=https://DUMMY\n'
+                         'sesoUpload=http://DUMMY\n'
                          '\n'
                          '######################### LOG folder path ########################\n'
                          '##inside the log folder should be folder PROBLEMS for debug     ##\n'
@@ -1534,7 +1535,7 @@ class GUI:
                 ctypes.windll.user32.MessageBoxW(0, 'Error 0x201 Instruction not found.', 'Error', 0x1000)
                 continue
             except requests.exceptions.SSLError:
-                ctypes.windll.user32.MessageBoxW(0, 'Error 0x202 SSL Error.', 'Error', 0x1000)
+                ctypes.windll.user32.MessageBoxW(0, 'Error 0x205 SSL Error.', 'Error', 0x1000)
                 continue
             except IOError:
                 if useSESO == True:

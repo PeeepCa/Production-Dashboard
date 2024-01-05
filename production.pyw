@@ -1094,7 +1094,7 @@ class GUI:
                          'greenFPY=98\n'
                          'orangeFPY=95\n'
                          'graphMode=lrf\n'
-                         'company_logo=company_logo=\\fs\gs\IndustrialEngineering\Public\04_Testing\01_APPs\production\Configuration\apag logo.bmp\n')
+                         'company_logo=company_logo=\\DUMMY\company.bmp\n')
 
             config.close()
             global run
@@ -1261,7 +1261,7 @@ class GUI:
 
         def show_general_instr():
             ##Placeholder
-            webbrowser.open_new('https://apagcosyst0.sharepoint.com/:b:/r/sites/ProgramDMS/production/GeneralInstructions/GWI-ACZ-84_Testov%C3%A1n%C3%AD%20na%20m%C4%9B%C5%99%C3%ADc%C3%ADch%20za%C5%99%C3%ADzen%C3%AD_Cover_2_0.pdf?csf=1&web=1&e=tH2RDV')
+            webbrowser.open_new('https://DUMMY')
 
         ##Left side
         ########################################################

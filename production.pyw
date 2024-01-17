@@ -912,8 +912,12 @@ class SESO:
     def upload(desc, stationNumber, wa, status, sn):
         wa = wa.strip(' ')
         if wa != 'locale':
-            payload = {'adapter': desc, 'station': stationNumber, 'wa': wa, status: '1', 'ap': sn}
-            req = requests.post(sesoUpload, data=payload, timeout=tmout)
+            if status == 'fail':
+                status = '0'
+            else:
+                status = '1'
+            payload = {'type': 'production', 'itac': '0', 'station': stationNumber, 'wa': wa, 'module': desc, 'ap': sn, 'result': status}
+            req = requests.post(sesoData1, data=payload, timeout=tmout)
 
     def updateProdData(stationNumber, mode):
         payload = {'action': 'hourly', 'station': stationNumber}

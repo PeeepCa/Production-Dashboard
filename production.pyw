@@ -61,6 +61,8 @@ from PIL import ImageTk, Image
 ##v14  - Rexxam fixes
 ##v14b - Fixed NOK components mark
 ##v14c - Added general instruction to config
+##v15  - New SESO for upload
+##     - Rexxam fail fixed
 ########################################################
 tLock = threading.Lock()
 tLock = threading.BoundedSemaphore(value=1)
@@ -356,7 +358,7 @@ class file_handler:
                         tLock.release()
 
                         result_data = data[0].split(',')
-                        if 'OK' in result_data[8] and result_data[9]:
+                        if 'OK' in result_data[8] and 'OK' in result_data[9]:
                             testresult = '0'
                             status = 'pass'
                         else:

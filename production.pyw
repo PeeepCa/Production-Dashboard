@@ -63,6 +63,7 @@ from PIL import ImageTk, Image
 ##v14c - Added general instruction to config
 ##v15  - New SESO for upload
 ##     - Rexxam fail fixed
+##v15a - Added ZA M991 support
 ########################################################
 tLock = threading.Lock()
 tLock = threading.BoundedSemaphore(value=1)
@@ -158,8 +159,10 @@ class support:
                     useTraining = ''
             elif 'log_format' in x:
                 log_format = x.split('=')[1]
+            elif 'ZAPATH' in x:
+                ZAPATH = x.split('=')[1]
 
-        return stationNumber, dbtype, PATH, thread_number, restAPI, bool(remove_file), bool(dashboard), sesoData, bool(useSESO), bool(parselog), bool(useReader), COM, BAUD, int(greenFPY), int(orangeFPY), mode, serverInstr, bool(showIntr), graphMode, bool(useLogin), company_logo, bool(showInfo), sesoData1, bool(useTraining), log_format, serverInstrGen
+        return stationNumber, dbtype, PATH, thread_number, restAPI, bool(remove_file), bool(dashboard), sesoData, bool(useSESO), bool(parselog), bool(useReader), COM, BAUD, int(greenFPY), int(orangeFPY), mode, serverInstr, bool(showIntr), graphMode, bool(useLogin), company_logo, bool(showInfo), sesoData1, bool(useTraining), log_format, serverInstrGen, ZAPATH
 
     def fpy_color(fpy, mode):
         if mode == 'light':
@@ -790,7 +793,10 @@ class file_handler:
                                 fail_count += 1
 
                     if remove_file == True:
-                        os.remove(split_path[0] + '\\PROBLEMS\\' + str(start_time) + split_path[1])
+                        if itac_desc == 'M991':
+                            os.replace(split_path[0] + '\\PROBLEMS\\' + str(start_time) + split_path[1], ZAPATH + split_path[1])
+                        else:
+                            os.remove(split_path[0] + '\\PROBLEMS\\' + str(start_time) + split_path[1])
 
                 except ValueError:
                     try:
@@ -1066,6 +1072,7 @@ class GUI:
                          'dbtype=ITAC\n'
                          'restAPI=http://DUMMY\n'
                          'instrPATH=//DUMMY\n'
+                         'ZAPATH=//DUMMY\n'
                          '\n'
                          '########################## APAG specific #########################\n'
                          'SESO=True\n'
@@ -1590,6 +1597,7 @@ def main():
     global run
     global useTraining
     global serverInstrGen
+    global ZAPATH
 
     run = True
     ########################################################
@@ -1600,11 +1608,11 @@ def main():
         msg_show = 1
 
         try:
-            stationNumber, dbtype, PATH, thread_number, restAPI, remove_file, dashboard, sesoData, useSESO, parselog, useReader, COM, BAUD, greenFPY, orangeFPY, mode, serverInstr, showInstr, graphMode, useLogin, company_logo, showInfo, sesoData1, useTraining, log_format, serverInstrGen = support.read_config()
+            stationNumber, dbtype, PATH, thread_number, restAPI, remove_file, dashboard, sesoData, useSESO, parselog, useReader, COM, BAUD, greenFPY, orangeFPY, mode, serverInstr, showInstr, graphMode, useLogin, company_logo, showInfo, sesoData1, useTraining, log_format, serverInstrGen, ZAPATH = support.read_config()
         except FileNotFoundError:
             ctypes.windll.user32.MessageBoxW(0, 'Error 0x001 Config not found', 'Error', 0x1000)
             GUI.config_window()
-            stationNumber, dbtype, PATH, thread_number, restAPI, remove_file, dashboard, sesoData, useSESO, parselog, useReader, COM, BAUD, greenFPY, orangeFPY, mode, serverInstr, showInstr, graphMode, useLogin, company_logo, showInfo, sesoData1, useTraining, log_format, serverInstrGen = support.read_config()
+            stationNumber, dbtype, PATH, thread_number, restAPI, remove_file, dashboard, sesoData, useSESO, parselog, useReader, COM, BAUD, greenFPY, orangeFPY, mode, serverInstr, showInstr, graphMode, useLogin, company_logo, showInfo, sesoData1, useTraining, log_format, serverInstrGen, ZAPATH = support.read_config()
             run = True
         except:
             ctypes.windll.user32.MessageBoxW(0, 'Error 0x002 Config error', 'Error', 0x1000)

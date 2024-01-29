@@ -64,6 +64,7 @@ from PIL import ImageTk, Image
 ##v15  - New SESO for upload
 ##     - Rexxam fail fixed
 ##v15a - Added ZA M991 support
+##v16  - Added network config files
 ########################################################
 tLock = threading.Lock()
 tLock = threading.BoundedSemaphore(value=1)
@@ -83,7 +84,9 @@ tmout = 5
 
 class support:
     def read_config():
-        file = open('C:\production\config.ini', 'r')
+        file = open('C:\\production\\tester.ini', 'r')
+        temp = file.read(-1)
+        file = open('//fs/gs/IndustrialEngineering/Public/04_Testing/01_APPs/production/Configuration/' + temp + '.ini', 'r')
         temp = file.read(-1)
         temp = temp.splitlines()
         for x in temp:
@@ -885,7 +888,7 @@ class HW:
         except serial.serialutil.SerialException:
             if msg_show == 1:
                 dec = ctypes.windll.user32.MessageBoxW(0, 'Error 0x203 Reader cannot be found.\rContinue withour reader?', 'HW Error', 0x1001)
-                if dec == 2:
+                if dec == 1:
                     useReader = False
                 else:
                     exit(0)
@@ -1029,6 +1032,59 @@ class GUI:
             global app_exit
             run = False
             app_exit = True
+            
+        def config_save(*args):
+            global run
+            global app_exit
+            
+            station_itac = tester_text_input.get(1.0, 'end-1c')
+            try:
+                config = open('C:\\production\\tester.ini', 'w')
+            except FileNotFoundError:
+                os.makedirs('C:\\production')
+                config = open('C:\\production\\tester.ini', 'w')
+            config.write(station_itac)
+            config.close()
+
+            try:
+                config = open('//fs/gs/IndustrialEngineering/Public/04_Testing/01_APPs/production/Configuration/' + station_itac + '.ini', 'r')
+                config.close()
+            except FileNotFoundError:
+                ctypes.windll.user32.MessageBoxW(0, 'Error 0x003 Config on server not found', 'Error', 0x1000)
+                GUI.config_window1(station_itac)
+            
+            run = False
+            app_exit = False
+
+        config = tkinter.Tk()
+        config.title('Dashboard Config')
+        config.geometry('200x60')
+        config.config(bg = 'white')
+        config.anchor('center')
+        config.wm_attributes('-toolwindow', 'True')
+
+        exit_button = tkinter.Button(config, text = 'Generate and exit', command = config_save, width = 20, bd = 1, bg = 'white', font = ('Helvetica 9'))
+        exit_button.place(x = 25, y = 30)
+
+        tester_text = tkinter.Label(config, text = 'iTAC ID' , font = ('Helvetica 8'), bg = 'white')
+        tester_text.place(x = 5, y = 5)
+        tester_text_input = tkinter.Text(config, height = 1, width = 10, font = ('Helvetica 8'), bg = 'white')
+        tester_text_input.place(x = 120, y = 5)
+
+        config.protocol('WM_DELETE_WINDOW', config_exit)
+        while run:
+            config.update()
+        config.quit()
+        config.destroy()
+        if app_exit == True:
+            exit(0)
+
+    def config_window1(station_itac):
+        def config_exit(*args):
+            global run
+            global app_exit
+            run = False
+            app_exit = True
         def config_save(*args):
             if str(instruction_var.get()) == '0':
                 ins_var = 'True'
@@ -1045,11 +1101,7 @@ class GUI:
             input_var = iTAC_nr_text_input.get(1.0, 'end-1c')
             input_com = reader_com_text_input.get(1.0, 'end-1c')
 
-            try:
-                config = open('C:\\production\\config.ini', 'w')
-            except FileNotFoundError:
-                os.makedirs('C:\\production')
-                config = open('C:\\production\\config.ini', 'w')
+            config = open('//fs/gs/IndustrialEngineering/Public/04_Testing/01_APPs/production/Configuration/' + station_itac + '.ini', 'w')
             config.write('############################## Read me ###########################\n'
                          '## Error list: 	0x000 Error in loading of program		##\n'
                          '##		0x001 Config not found				##\n'
@@ -1072,6 +1124,7 @@ class GUI:
                          'dbtype=ITAC\n'
                          'restAPI=http://DUMMY\n'
                          'instrPATH=//DUMMY\n'
+                         'instrGEN=//DUMMY\n'
                          'ZAPATH=//DUMMY\n'
                          '\n'
                          '########################## APAG specific #########################\n'
@@ -1134,6 +1187,8 @@ class GUI:
         iTAC_nr_text.place(x = 5, y = 5)
         iTAC_nr_text_input = tkinter.Text(config, height = 1, width = 10, font = ('Helvetica 8'), bg = 'white')
         iTAC_nr_text_input.place(x = 120, y = 5)
+
+        iTAC_nr_text_input.insert(1.0, station_itac)
 
         reader_com_text = tkinter.Label(config, text = 'Reader port' , font = ('Helvetica 8'), bg = 'white')
         reader_com_text.place(x = 5, y = 25)
@@ -1215,7 +1270,6 @@ class GUI:
         tr7 = ''
 
         if mode == 'light':
-
             canvasBack = 'white'
             rectBack = '#bda5ca'
             textColor = '#684979'

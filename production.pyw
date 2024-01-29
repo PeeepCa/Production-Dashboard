@@ -794,7 +794,9 @@ class file_handler:
 
                     if remove_file == True:
                         if itac_desc == 'M991':
-                            os.replace(split_path[0] + '\\PROBLEMS\\' + str(start_time) + split_path[1], ZAPATH + split_path[1])
+                            os.remove(split_path[0] + '\\PROBLEMS\\' + str(start_time) + split_path[1])
+                            log = open(ZAPATH + 'TRACE_' + str(datetime.date.today()).replace('-','') + '.txt', 'w')
+                            log.write(sn + ' B1280AA 05 ' + itac_wa + ' ' + datetime.datetime.strptime(times[1], '%d.%m.%s %H:%M:%S') + ' ' + sn[5:] + '\n')
                         else:
                             os.remove(split_path[0] + '\\PROBLEMS\\' + str(start_time) + split_path[1])
 

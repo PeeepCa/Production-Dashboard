@@ -63,8 +63,8 @@ from PIL import ImageTk, Image
 ##v14c - Added general instruction to config
 ##v15  - New SESO for upload
 ##     - Rexxam fail fixed
-##v15a - Added ZA M991 support
 ##v16  - Added network config files
+##     - Added minimize button
 ########################################################
 tLock = threading.Lock()
 tLock = threading.BoundedSemaphore(value=1)
@@ -796,10 +796,7 @@ class file_handler:
                                 fail_count += 1
 
                     if remove_file == True:
-                        if itac_desc == 'M991':
-                            os.replace(split_path[0] + '\\PROBLEMS\\' + str(start_time) + split_path[1], ZAPATH + split_path[1])
-                        else:
-                            os.remove(split_path[0] + '\\PROBLEMS\\' + str(start_time) + split_path[1])
+                        os.remove(split_path[0] + '\\PROBLEMS\\' + str(start_time) + split_path[1])
 
                 except ValueError:
                     try:
@@ -1032,12 +1029,13 @@ class GUI:
             global app_exit
             run = False
             app_exit = True
-            
+
         def config_save(*args):
             global run
             global app_exit
-            
+
             station_itac = tester_text_input.get(1.0, 'end-1c')
+            
             try:
                 config = open('C:\\production\\tester.ini', 'w')
             except FileNotFoundError:
@@ -1052,7 +1050,7 @@ class GUI:
             except FileNotFoundError:
                 ctypes.windll.user32.MessageBoxW(0, 'Error 0x003 Config on server not found', 'Error', 0x1000)
                 GUI.config_window1(station_itac)
-            
+
             run = False
             app_exit = False
 
@@ -1085,6 +1083,7 @@ class GUI:
             global app_exit
             run = False
             app_exit = True
+
         def config_save(*args):
             if str(instruction_var.get()) == '0':
                 ins_var = 'True'
@@ -1260,6 +1259,8 @@ class GUI:
         global tr6
         global tr7
 
+        global dsh_offset
+
         tr0 = ''
         tr1 = ''
         tr2 = ''
@@ -1327,13 +1328,30 @@ class GUI:
             support.open_instr(instructionList, module, serverInstr)
 
         def show_general_instr():
-            ##Placeholder
             webbrowser.open_new(serverInstrGen)
+
+        def minimize(*args):
+            global dsh_offset
+            if dsh_offset == 320:
+                dsh_offset = 0
+            else:
+                dsh_offset = 320
+
+            window_width = 400 - dsh_offset
+            window_height = 250
+            screen_width = int(top.winfo_screenwidth() - window_width)
+            screen_height = int(top.winfo_screenheight() - window_height - 40)
+            top.geometry(f'{window_width}x{window_height}+{screen_width}+{screen_height}')
+
+            c.coords(APP_ALIVE, 390 - dsh_offset, 0, 400 - dsh_offset, 10)
+            c.coords(APP_MINIMIZE, 380 - dsh_offset, 0, 390 - dsh_offset, 10)
+
+            c.pack()
 
         ##Left side
         ########################################################
         if showInfo == True:
-            TC = tkinter.Label(top, text = 'Thread count:', bg = rectBack, font = ('Helvetica 7'), fg = textColor)
+            TC = tkinter.Label(top, text = 'Thread no:', bg = rectBack, font = ('Helvetica 7'), fg = textColor)
             TC.place(x = 3, y = 0)
 
             TCN = tkinter.Label(top, text = thread_number, bg = rectBack, font = ('Helvetica 7'), fg = textColor)
@@ -1356,6 +1374,10 @@ class GUI:
 
         APP_ALIVE = c.create_rectangle(390 - dsh_offset, 0, 400 - dsh_offset, 10, tags = 'APP_ALIVE')
         c.tag_bind('APP_ALIVE', '<Button-1>', main_exit)
+
+        APP_MINIMIZE = c.create_rectangle(380 - dsh_offset, 0, 390 - dsh_offset, 10, tags = 'APP_MINIMIZE')
+        c.tag_bind('APP_MINIMIZE', '<Button-1>', minimize)
+        c.itemconfig(APP_MINIMIZE, fill = '#C2BAFC', outline = 'black')
 
         ##Right side
         ########################################################
@@ -1439,6 +1461,7 @@ class GUI:
 
         def change_color():
             current_color = c.itemcget(APP_ALIVE, 'fill')
+
             if current_color == 'black':
                 c.itemconfig(APP_ALIVE, fill = '#C2BAFC')
             else:
@@ -1538,7 +1561,7 @@ class GUI:
                                             logged = SESO.loginLogout(stationNumber, op_name, op_id, inout = 'IN')
                                             screenUnlock()
                                             primary = True
-                                        locktimeout = 60
+                                        locktimeout = 10
                                 else:
                                     training = 'Card disconnected'
                                     op_id = str(locktimeout)
@@ -1561,7 +1584,7 @@ class GUI:
                                             if logged == False:
                                                 logged = SESO.loginLogout(stationNumber, op_name, op_id, inout = 'IN')
                                                 screenUnlock()
-                                            locktimeout = 60
+                                            locktimeout = 10
                                         else:
                                             training = 'Not logged in'
                                             screenLock()
@@ -1584,7 +1607,7 @@ class GUI:
                                     if logged == False:
                                         logged = SESO.loginLogout(stationNumber, op_name, op_id, inout = 'IN')
                                         screenUnlock()
-                                    locktimeout = 60
+                                    locktimeout = 10
                                 else:
                                     training = 'Not logged in'
                                     screenLock()

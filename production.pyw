@@ -1035,7 +1035,7 @@ class GUI:
             global app_exit
 
             station_itac = tester_text_input.get(1.0, 'end-1c')
-            
+
             try:
                 config = open('C:\\production\\tester.ini', 'w')
             except FileNotFoundError:

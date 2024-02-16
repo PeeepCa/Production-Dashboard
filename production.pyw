@@ -372,7 +372,7 @@ class file_handler:
                             status = 'fail'
 
                         sn = data[0].split(',')
-                        sn = sn[5] + '___' + sn[4] + 'E9'
+                        sn = sn[5] + sn[4] + 'E9'
 
                         if dbtype == 'ITAC':
                             if ITAC.check1(sn) != '0':

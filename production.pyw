@@ -65,6 +65,7 @@ from PIL import ImageTk, Image
 ##     - Rexxam fail fixed
 ##v16  - Added network config files
 ##     - Added minimize button
+##     - iTAC warning 212 ignored
 ########################################################
 tLock = threading.Lock()
 tLock = threading.BoundedSemaphore(value=1)

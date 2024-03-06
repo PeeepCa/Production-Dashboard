@@ -288,7 +288,7 @@ class ITAC:
             ctypes.windll.user32.MessageBoxW(0, 'Error 0x303 iTAC trCheckSerialNumberState problem ' + str(req.status_code), 'iTAC Message', 0x1000)
         status = req.text.replace(' ','').replace('\r\n','').split(',')[1]
         status = status.replace('"','').replace('}','').replace('[','').replace(']','').split(':')[1]
-        if status != '0':
+        if status != '0' and status != '212':
             ctypes.windll.user32.MessageBoxW(0, 'iTAC AOI ' + status, 'iTAC Message', 0x1000)
 
         return status
@@ -375,7 +375,7 @@ class file_handler:
                         sn = sn[5] + sn[4] + 'E9'
 
                         if dbtype == 'ITAC':
-                            if ITAC.check1(sn) != '0':
+                            if ITAC.check1(sn) != '0' and ITAC.check1(sn) != '212':
                                 continue
 
                             itac_data = ITAC.check0(sn)
@@ -645,7 +645,7 @@ class file_handler:
                             continue
 
                         if dbtype == 'ITAC':
-                            if ITAC.check1(sn) != '0':
+                            if ITAC.check1(sn) != '0' and ITAC.check1(sn) != '212':
                                 continue
 
                             itac_data = ITAC.check0(sn)

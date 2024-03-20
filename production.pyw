@@ -1168,7 +1168,6 @@ class GUI:
             run = False
             app_exit = False
 
-        remove_file_var = 0
         config = tkinter.Tk()
         config.title('Dashboard Config')
         config.geometry('200x160')

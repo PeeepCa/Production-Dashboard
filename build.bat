@@ -1,3 +1,3 @@
-cd C:\Users\pokorny\OneDrive - APAG Elektronik s.r.o\Python\itac multi
+cd C:\Users\pokorny\OneDrive - APAG Elektronik s.r.o\Documents\GitHub\Production-Dashboard
 
-python -m PyInstaller production.pyw --onefile -w
+py -3.7 -m PyInstaller production.pyw --onefile -w

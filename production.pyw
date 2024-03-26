@@ -66,7 +66,7 @@ from PIL import ImageTk, Image
 ##v16  - Added network config files
 ##     - Added minimize button
 ##     - iTAC warning 212 ignored
-##v16a - Stripped 0 on the beginning of the op_id
+##v16a - Stripped 0 from the beginning of the op_id
 ########################################################
 tLock = threading.Lock()
 tLock = threading.BoundedSemaphore(value=1)

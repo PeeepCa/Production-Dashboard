@@ -66,6 +66,7 @@ from PIL import ImageTk, Image
 ##v16  - Added network config files
 ##     - Added minimize button
 ##     - iTAC warning 212 ignored
+##v16a - Stripped 0 on the beginning of the op_id
 ########################################################
 tLock = threading.Lock()
 tLock = threading.BoundedSemaphore(value=1)
@@ -980,6 +981,9 @@ class SESO:
         op_name = data[1].split(':')[1].replace('"','') + ' ' + data[0].split(':')[2].replace('"','')
         data = (req.text).split('[')[1].replace('[','').replace(']','').replace('{','').replace('}','').replace('"','').split(',')
 
+        if list(op_id)[0] == '0':
+            op_id = op_id[-3:]
+
         if useTraining == True:
             if len(data) > 1:
                 training = 'Training OK'
@@ -999,6 +1003,9 @@ class SESO:
 
         op_id = req.text.split(',')[5].split(':')[1].split('-')[0].replace('"','')
         op_name = req.text.split(',')[4].split(':')[1].split('-')[0].replace('"','')
+
+        if list(op_id)[0] == '0':
+            op_id = op_id[-3:]
 
         if len(op_id) > 1:
             training = 'Secondary'
